@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafePause — Payment Safety</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f4;
+            color: #17251e;
+            max-width: 520px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px #00000010;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #637168;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccd5ce;
+            border-radius: 8px;
+        }
+
+        .signal {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            font-weight: normal;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #1e3a2b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #eef2ef;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .notice {
+            font-size: 12px;
+            color: #637168;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>SafePause</h1>
+        <p class="subtitle">A moment of safety before you pay.</p>
+
+        <form id="paymentForm">
+            <label for="amount">Amount (₹)</label>
+            <input id="amount" type="number" value="2500" min="1" max="1000000" required>
+
+            <label for="payee">Payee name</label>
+            <input id="payee" type="text" value="Demo Payee" maxlength="100" required>
+
+            <label for="vpa">Simulated UPI ID</label>
+            <input id="vpa" type="text" value="demo@upi" maxlength="150" required>
+
+            <hr>
+
+            <label class="signal">
+                <input id="onCall" type="checkbox">
+                On a phone call
+            </label>
+
+            <label class="signal">
+                <input id="remote" type="checkbox">
+                Remote-access app active (simulated)
+            </label>
+
+            <label class="signal">
+                <input id="newPayee" type="checkbox" checked>
+                First payment to this payee
+            </label>
+
+            <label class="signal">
+                <input id="mule" type="checkbox">
+                Payee on simulated mule list
+            </label>
+
+            <button type="submit">Check payment safety</button>
+        </form>
+
+        <div id="result" role="status" aria-live="polite">
+            Your simulated risk assessment will appear here.
+        </div>
+
+        <p class="notice">
+            Demonstration only. No real payment is made.
+            All risk signals are manually simulated.
+        </p>
+    </div>
+
+    <script>
+        const form = document.getElementById("paymentForm");
+        const result = document.getElementById("result");
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            result.textContent = "Checking simulated payment risk...";
+
+            const payload = {
+                amount: Number(document.getElementById("amount").value),
+                payee_name: document.getElementById("payee").value,
+                payee_vpa: document.getElementById("vpa").value,
+                on_call: document.getElementById("onCall").checked,
+                remote_access_active: document.getElementById("remote").checked,
+                payee_first_time: document.getElementById("newPayee").checked,
+                payee_on_mule_list: document.getElementById("mule").checked
+            };
+
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:8002/event",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(JSON.stringify(data));
+                }
+
+                result.textContent =
+                    "Decision: " + data.status +
+                    "\nRisk tier: " + data.risk.tier +
+                    "\nRisk families: " +
+                    data.risk.active_families.join(", ") +
+                    "\n\nReasons:\n- " +
+                    data.risk.reasons.join("\n- ") +
+                    "\n\nSimulation only — no payment was made.";
+
+            } catch (error) {
+                result.textContent =
+                    "Could not contact SafePause.\n" +
+                    "Check that both APIs are running on ports 8001 and 8002.\n\n" +
+                    error.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
