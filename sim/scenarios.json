@@ -1,0 +1,102 @@
+[
+    {
+        "name": "normal_payment",
+        "expected_tier": "GREEN",
+        "signals": {}
+    },
+    {
+        "name": "first_time_payee_only",
+        "expected_tier": "GREEN",
+        "signals": {
+            "payee_first_time": true
+        }
+    },
+    {
+        "name": "phone_call_only",
+        "expected_tier": "GREEN",
+        "signals": {
+            "on_call": true
+        }
+    },
+    {
+        "name": "call_and_new_payee",
+        "expected_tier": "AMBER",
+        "signals": {
+            "on_call": true,
+            "payee_first_time": true
+        }
+    },
+    {
+        "name": "remote_access_and_new_payee",
+        "expected_tier": "RED",
+        "signals": {
+            "remote_access_active": true,
+            "payee_first_time": true
+        }
+    },
+    {
+        "name": "mule_payee_and_phone_call",
+        "expected_tier": "RED",
+        "signals": {
+            "payee_on_mule_list": true,
+            "on_call": true
+        }
+    },
+    {
+        "name": "collect_request_only",
+        "expected_tier": "GREEN",
+        "signals": {
+            "is_collect": true
+        }
+    },
+    {
+        "name": "three_independent_risk_families",
+        "expected_tier": "RED",
+        "signals": {
+            "on_call": true,
+            "remote_access_active": true,
+            "payee_first_time": true
+        }
+    },
+    {
+        "name": "screen_sharing_and_collect_request",
+        "expected_tier": "AMBER",
+        "signals": {
+            "screen_share_active": true,
+            "is_collect": true
+        }
+    },
+    {
+        "name": "multiple_behavior_signals_same_family",
+        "expected_tier": "GREEN",
+        "signals": {
+            "is_collect": true,
+            "hour_odd": true,
+            "amount_zscore": 2.5,
+            "retry_count": 3
+        }
+    },
+    {
+        "name": "missing_signals",
+        "expected_tier": "GREEN",
+        "signals": {}
+    },
+    {
+        "name": "conflicting_low_and_high_vpa_context",
+        "expected_tier": "RED",
+        "signals": {
+            "vpa_lookalike_score": 0.9,
+            "on_call": true,
+            "remote_access_active": true
+        }
+    },
+    {
+        "name": "numeric_threshold_boundary",
+        "expected_tier": "AMBER",
+        "signals": {
+            "hour_odd": true,
+            "retry_count": 2,
+            "on_call": true
+        }
+    }
+]
