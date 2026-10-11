@@ -1,0 +1,216 @@
+[
+    {
+        "name": "normal_routine_payment",
+        "expected_label": "NORMAL",
+        "signals": {},
+        "label_rationale": "Routine payment without any risk indicators."
+    },
+    {
+        "name": "first_time_payee_only",
+        "expected_label": "NORMAL",
+        "signals": {
+            "payee_first_time": true
+        },
+        "label_rationale": "A new payee alone is not sufficient to classify a payment as risky."
+    },
+    {
+        "name": "unusual_hour_only",
+        "expected_label": "NORMAL",
+        "signals": {
+            "hour_odd": true
+        },
+        "label_rationale": "An unusual payment hour alone is a weak indicator."
+    },
+    {
+        "name": "large_amount_only",
+        "expected_label": "NORMAL",
+        "signals": {
+            "amount_zscore": 2.5
+        },
+        "label_rationale": "A relatively large amount alone does not establish fraud."
+    },
+    {
+        "name": "single_retry_only",
+        "expected_label": "NORMAL",
+        "signals": {
+            "retry_count": 1
+        },
+        "label_rationale": "One payment retry can occur during normal use."
+    },
+    {
+        "name": "recent_sim_change_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "device_or_sim_change_72h": true
+        },
+        "label_rationale": "A recent SIM or device change warrants additional caution in this synthetic dataset."
+    },
+    {
+        "name": "remote_access_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "remote_access_active": true
+        },
+        "label_rationale": "Active remote access can indicate that another person is controlling the device."
+    },
+    {
+        "name": "screen_sharing_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "screen_share_active": true
+        },
+        "label_rationale": "Screen sharing can expose sensitive payment information."
+    },
+    {
+        "name": "phone_call_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "on_call": true
+        },
+        "label_rationale": "An active phone call can be a warning sign of social engineering."
+    },
+    {
+        "name": "collect_request_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "is_collect": true
+        },
+        "label_rationale": "A collect request can be abused to trick users into authorising a payment."
+    },
+    {
+        "name": "mule_payee_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "payee_on_mule_list": true
+        },
+        "label_rationale": "A payee on a simulated mule-account list is a strong risk indicator."
+    },
+    {
+        "name": "high_vpa_similarity_only",
+        "expected_label": "RISKY",
+        "signals": {
+            "vpa_lookalike_score": 0.85
+        },
+        "label_rationale": "A high payee-address lookalike score can indicate impersonation."
+    },
+    {
+        "name": "call_and_new_payee",
+        "expected_label": "RISKY",
+        "signals": {
+            "on_call": true,
+            "payee_first_time": true
+        },
+        "label_rationale": "An active call combined with a first-time payee is a stronger warning pattern."
+    },
+    {
+        "name": "remote_access_and_new_payee",
+        "expected_label": "RISKY",
+        "signals": {
+            "remote_access_active": true,
+            "payee_first_time": true
+        },
+        "label_rationale": "Remote access combined with a new payee is a high-risk combination."
+    },
+    {
+        "name": "new_payee_and_high_vpa_similarity",
+        "expected_label": "RISKY",
+        "signals": {
+            "payee_first_time": true,
+            "vpa_lookalike_score": 0.9
+        },
+        "label_rationale": "A new payee with a highly similar payment address can indicate impersonation."
+    },
+    {
+        "name": "mule_payee_and_phone_call",
+        "expected_label": "RISKY",
+        "signals": {
+            "payee_on_mule_list": true,
+            "on_call": true
+        },
+        "label_rationale": "A flagged payee combined with an active call represents a strong risk pattern."
+    },
+    {
+        "name": "screen_sharing_and_collect_request",
+        "expected_label": "RISKY",
+        "signals": {
+            "screen_share_active": true,
+            "is_collect": true
+        },
+        "label_rationale": "Screen sharing alongside a collect request can expose the user to payment manipulation."
+    },
+    {
+        "name": "multiple_behavior_signals_same_family",
+        "expected_label": "RISKY",
+        "signals": {
+            "is_collect": true,
+            "hour_odd": true,
+            "amount_zscore": 2.5,
+            "retry_count": 3
+        },
+        "label_rationale": "Several simultaneous behavioural warnings warrant caution even though they belong to one signal family."
+    },
+    {
+        "name": "several_signals_from_behaviour_family",
+        "expected_label": "NORMAL",
+        "signals": {
+            "hour_odd": true,
+            "amount_zscore": 2.5
+        },
+        "label_rationale": "An unusual hour and large amount can occur together in a legitimate transaction."
+    },
+    {
+        "name": "remote_access_and_screen_sharing_only",
+        "expected_label": "NORMAL",
+        "signals": {
+            "remote_access_active": true,
+            "screen_share_active": true
+        },
+        "label_rationale": "This scenario preserves the existing synthetic assumption that device signals alone can occur in a benign context."
+    },
+    {
+        "name": "multiple_signals_with_benign_context",
+        "expected_label": "NORMAL",
+        "signals": {
+            "on_call": true,
+            "payee_first_time": true,
+            "hour_odd": true
+        },
+        "label_rationale": "This is intended as a benign-context example, but the current signals do not explicitly encode that context."
+    },
+    {
+        "name": "odd_hour_and_repeated_retries",
+        "expected_label": "RISKY",
+        "signals": {
+            "hour_odd": true,
+            "retry_count": 3
+        },
+        "label_rationale": "An unusual hour combined with repeated retries can indicate a suspicious payment attempt."
+    },
+    {
+        "name": "device_change_and_first_time_payee",
+        "expected_label": "RISKY",
+        "signals": {
+            "device_or_sim_change_72h": true,
+            "payee_first_time": true
+        },
+        "label_rationale": "A recent device or SIM change combined with a new payee warrants additional caution."
+    },
+    {
+        "name": "remote_access_with_mule_payee",
+        "expected_label": "RISKY",
+        "signals": {
+            "remote_access_active": true,
+            "payee_on_mule_list": true
+        },
+        "label_rationale": "Remote access combined with a flagged payee is a strong warning pattern."
+    },
+    {
+        "name": "collect_request_with_repeated_retries",
+        "expected_label": "RISKY",
+        "signals": {
+            "is_collect": true,
+            "retry_count": 3
+        },
+        "label_rationale": "A collect request accompanied by repeated retries deserves additional scrutiny."
+    }
+]

@@ -4,185 +4,1113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#10291f">
     <title>SafePause — Payment Safety</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f5f4;
-            color: #17251e;
-            max-width: 520px;
-            margin: 30px auto;
-            padding: 20px;
+        :root {
+            --green-950: #10291f;
+            --green-800: #204b38;
+            --green-700: #286448;
+            --green-100: #e6f3e9;
+            --bg: #f4f6f2;
+            --text: #19291f;
+            --muted: #718076;
+            --border: #e1e8e0;
+            --amber: #94600b;
+            --amber-bg: #fff3d7;
+            --red: #b42332;
+            --red-bg: #ffeaec;
+            --shadow: 0 18px 55px rgba(22, 51, 34, 0.08);
         }
 
-        .card {
-            background: white;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 18px #00000010;
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px 45px;
+            background:
+                radial-gradient(ellipse at top left, #e2eee2, transparent 42%),
+                var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+            line-height: 1.5;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 15px;
+            background: var(--green-950);
+            color: white;
+            font-size: 25px;
+        }
+
+        .brand-name {
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -.6px;
+        }
+
+        .brand-caption {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .demo-badge {
+            padding: 7px 11px;
+            border: 1px solid #c9dfcd;
+            border-radius: 30px;
+            color: var(--green-800);
+            background: #eff8ef;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .5px;
+            white-space: nowrap;
+        }
+
+        .hero {
+            margin-bottom: 23px;
+        }
+
+        .eyebrow {
+            margin: 0 0 7px;
+            color: var(--green-700);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
         }
 
         h1 {
+            margin: 0;
+            font-size: clamp(29px, 6vw, 39px);
+            letter-spacing: -1.7px;
+            line-height: 1.13;
+        }
+
+        .hero p:not(.eyebrow) {
+            max-width: 480px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .layout {
+            display: grid;
+            gap: 18px;
+        }
+
+        .card {
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid rgba(225, 232, 224, .9);
+            border-radius: 22px;
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #edf4ed;
+            font-size: 18px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 16px;
+            letter-spacing: -.3px;
+        }
+
+        .section-description {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-prefix {
+            position: absolute;
+            top: 50%;
+            left: 13px;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            min-width: 0;
+            padding: 12px 13px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            outline: none;
+            background: #fcfdfb;
+            color: var(--text);
+        }
+
+        .field input:focus {
+            border-color: var(--green-700);
+            box-shadow: 0 0 0 3px rgba(40, 100, 72, .1);
+        }
+
+        #amount {
+            padding-left: 32px;
+            font-weight: 750;
+        }
+
+        .divider {
+            height: 1px;
+            margin: 23px 0;
+            background: var(--border);
+        }
+
+        .signals-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
             margin-bottom: 5px;
         }
 
-        .subtitle {
-            color: #637168;
-            margin-bottom: 24px;
+        .manual-tag {
+            color: var(--muted);
+            font-size: 10px;
         }
 
-        label {
-            display: block;
-            margin: 14px 0 6px;
-            font-weight: bold;
+        .signals-intro {
+            margin: 4px 0 14px;
+            color: var(--muted);
+            font-size: 12px;
         }
 
-        input[type="text"],
-        input[type="number"] {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #ccd5ce;
-            border-radius: 8px;
+        .signal-list {
+            display: grid;
+            gap: 9px;
         }
 
         .signal {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin: 12px 0;
-            font-weight: normal;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background .18s, border-color .18s;
         }
 
-        button {
-            width: 100%;
-            padding: 13px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 8px;
-            background: #1e3a2b;
-            color: white;
-            font-size: 16px;
+        .signal:has(input:checked) {
+            border-color: #a8cbb0;
+            background: #f3f9f3;
+        }
+
+        .signal-copy {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .signal-emoji {
+            display: grid;
+            place-items: center;
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #f0f3ef;
+            font-size: 17px;
+        }
+
+        .signal-title {
+            display: block;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .signal-help {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .signal input {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: var(--green-700);
             cursor: pointer;
         }
 
-        #result {
-            margin-top: 20px;
-            padding: 16px;
-            border-radius: 10px;
-            background: #eef2ef;
-            white-space: pre-wrap;
+        .primary-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 51px;
+            margin-top: 22px;
+            padding: 14px 18px;
+            border: 0;
+            border-radius: 13px;
+            background: var(--green-950);
+            color: white;
+            font-size: 14px;
+            font-weight: 750;
+            cursor: pointer;
+        }
+
+        .primary-button:hover {
+            background: var(--green-800);
+        }
+
+        .primary-button:disabled {
+            opacity: .7;
+            cursor: wait;
+        }
+
+        .button-arrow {
+            font-size: 19px;
+        }
+
+        .result-card {
+            display: none;
+        }
+
+        .result-card.visible {
+            display: block;
+        }
+
+        .result-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .result-label {
+            margin: 0 0 5px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .result-title {
+            margin: 0;
+            font-size: 23px;
+            letter-spacing: -.7px;
+        }
+
+        .tier-pill {
+            padding: 7px 11px;
+            border-radius: 30px;
+            background: #e8f4e9;
+            color: #23633a;
+            font-size: 11px;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .result-card.green {
+            border-top: 4px solid #2b8050;
+        }
+
+        .result-card.amber {
+            border-top: 4px solid #d99a23;
+        }
+
+        .result-card.red {
+            border-top: 4px solid #d43d4c;
+        }
+
+        .result-card.amber .tier-pill {
+            background: var(--amber-bg);
+            color: var(--amber);
+        }
+
+        .result-card.red .tier-pill {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        .result-message {
+            margin: 14px 0 18px;
+            color: #536258;
+            font-size: 13px;
+        }
+
+        .detail-heading {
+            margin: 17px 0 8px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+
+        .family-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .family-chip {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: #f7f9f6;
+            color: #46574b;
+            font-size: 11px;
+        }
+
+        .reason-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #536258;
+            font-size: 12px;
+        }
+
+        .reason-list li {
+            margin: 7px 0;
+        }
+
+        .transaction {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 10px;
             overflow-wrap: anywhere;
         }
 
         .notice {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            padding: 14px;
+            border: 1px solid #e3e9df;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, .65);
+            color: #69776d;
+            font-size: 11px;
+        }
+
+        .notice strong {
+            color: #34493a;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: #8a958c;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .error-box {
+            margin-top: 15px;
+            padding: 12px;
+            border: 1px solid #f1c8cb;
+            border-radius: 10px;
+            background: #fff1f1;
+            color: #9d2430;
             font-size: 12px;
-            color: #637168;
+            overflow-wrap: anywhere;
+        }
+
+        /* Transaction history */
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 9px;
+            margin-bottom: 20px;
+        }
+
+        .history-stat {
+            padding: 12px 8px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #f9fbf8;
+        }
+
+        .history-stat span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .history-stat strong {
+            display: block;
+            margin-top: 5px;
+            font-size: 22px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child {
+            border-bottom: 0;
+        }
+
+        .history-payee {
+            font-size: 13px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .history-meta {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .history-tier {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: var(--green-100);
+            color: var(--green-800);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .history-tier.amber {
+            background: var(--amber-bg);
+            color: var(--amber);
+        }
+
+        .history-tier.red {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        .history-amount {
+            flex-shrink: 0;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .empty-history {
+            padding: 16px 0;
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .clear-history {
+            width: 100%;
+            margin-top: 14px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            color: var(--muted);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .clear-history:hover {
+            background: #f4f6f2;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 22px 12px 32px;
+            }
+
+            .card {
+                padding: 19px;
+                border-radius: 18px;
+            }
+
+            .brand-caption {
+                display: none;
+            }
+
+            .field-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .result-title {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .history-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
-        <h1>SafePause</h1>
-        <p class="subtitle">A moment of safety before you pay.</p>
+    <main class="app">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon" aria-hidden="true">◈</div>
+                <div>
+                    <div class="brand-name">SafePause</div>
+                    <div class="brand-caption">A safer moment before every payment</div>
+                </div>
+            </div>
+            <span class="demo-badge">● DEMO MODE</span>
+        </header>
 
-        <form id="paymentForm">
-            <label for="amount">Amount (₹)</label>
-            <input id="amount" type="number" value="2500" min="1" max="1000000" required>
+        <section class="hero">
+            <p class="eyebrow">Payment safety assistant</p>
+            <h1>Pause. Check.<br>Pay with confidence.</h1>
+            <p>Review a simulated payment for potential warning signs before continuing.</p>
+        </section>
 
-            <label for="payee">Payee name</label>
-            <input id="payee" type="text" value="Demo Payee" maxlength="100" required>
+        <div class="layout">
+            <section class="card">
+                <div class="section-heading">
+                    <div class="section-icon" aria-hidden="true">₹</div>
+                    <div>
+                        <h2>Payment details</h2>
+                        <p class="section-description">Enter details for a simulated UPI payment.</p>
+                    </div>
+                </div>
 
-            <label for="vpa">Simulated UPI ID</label>
-            <input id="vpa" type="text" value="demo@upi" maxlength="150" required>
+                <form id="paymentForm">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label class="field-label" for="amount">Amount</label>
+                            <div class="input-wrap">
+                                <span class="input-prefix">₹</span>
+                                <input id="amount" type="number" value="2500" min="1" max="1000000" step="0.01"
+                                    required>
+                            </div>
+                        </div>
 
-            <hr>
+                        <div class="field">
+                            <label class="field-label" for="payee">Payee name</label>
+                            <input id="payee" type="text" value="Demo Payee" maxlength="100" required>
+                        </div>
 
-            <label class="signal">
-                <input id="onCall" type="checkbox">
-                On a phone call
-            </label>
+                        <div class="field full">
+                            <label class="field-label" for="vpa">Simulated UPI ID</label>
+                            <input id="vpa" type="text" value="demo@upi" minlength="3" maxlength="150" required>
+                        </div>
+                    </div>
 
-            <label class="signal">
-                <input id="remote" type="checkbox">
-                Remote-access app active (simulated)
-            </label>
+                    <div class="divider"></div>
 
-            <label class="signal">
-                <input id="newPayee" type="checkbox" checked>
-                First payment to this payee
-            </label>
+                    <div class="signals-heading">
+                        <h2>Risk signals</h2>
+                        <span class="manual-tag">MANUALLY SIMULATED</span>
+                    </div>
+                    <p class="signals-intro">Switch on a condition to test how SafePause responds.</p>
 
-            <label class="signal">
-                <input id="mule" type="checkbox">
-                Payee on simulated mule list
-            </label>
+                    <div class="signal-list">
+                        <label class="signal" for="onCall">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">📞</span>
+                                <span>
+                                    <span class="signal-title">On a phone call</span>
+                                    <span class="signal-help">The user is currently on a call.</span>
+                                </span>
+                            </span>
+                            <input id="onCall" type="checkbox">
+                        </label>
 
-            <button type="submit">Check payment safety</button>
-        </form>
+                        <label class="signal" for="remote">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">🖥️</span>
+                                <span>
+                                    <span class="signal-title">Remote access active</span>
+                                    <span class="signal-help">A remote-access warning is simulated.</span>
+                                </span>
+                            </span>
+                            <input id="remote" type="checkbox">
+                        </label>
 
-        <div id="result" role="status" aria-live="polite">
-            Your simulated risk assessment will appear here.
+                        <label class="signal" for="screenShare">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">📲</span>
+                                <span>
+                                    <span class="signal-title">Screen sharing active</span>
+                                    <span class="signal-help">The screen is being shared (simulated).</span>
+                                </span>
+                            </span>
+                            <input id="screenShare" type="checkbox">
+                        </label>
+
+                        <label class="signal" for="newPayee">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">👤</span>
+                                <span>
+                                    <span class="signal-title">First payment to this payee</span>
+                                    <span class="signal-help">This recipient is new to the user.</span>
+                                </span>
+                            </span>
+                            <input id="newPayee" type="checkbox" checked>
+                        </label>
+
+                        <label class="signal" for="mule">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">⚑</span>
+                                <span>
+                                    <span class="signal-title">Payee on simulated mule list</span>
+                                    <span class="signal-help">A test warning associated with the payee.</span>
+                                </span>
+                            </span>
+                            <input id="mule" type="checkbox">
+                        </label>
+
+                        <label class="signal" for="collect">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">↗</span>
+                                <span>
+                                    <span class="signal-title">Collect request</span>
+                                    <span class="signal-help">The user is asked to approve a request.</span>
+                                </span>
+                            </span>
+                            <input id="collect" type="checkbox">
+                        </label>
+
+                        <label class="signal" for="simChange">
+                            <span class="signal-copy">
+                                <span class="signal-emoji">📱</span>
+                                <span>
+                                    <span class="signal-title">Recent device or SIM change</span>
+                                    <span class="signal-help">A change within 72 hours is simulated.</span>
+                                </span>
+                            </span>
+                            <input id="simChange" type="checkbox">
+                        </label>
+                    </div>
+
+                    <button class="primary-button" id="submitButton" type="submit">
+                        <span id="buttonText">Check payment safety</span>
+                        <span class="button-arrow" aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="card result-card" id="resultCard" aria-live="polite">
+                <div class="result-top">
+                    <div>
+                        <p class="result-label">Risk assessment complete</p>
+                        <h2 class="result-title" id="resultTitle">Assessment</h2>
+                    </div>
+                    <span class="tier-pill" id="tierPill">GREEN</span>
+                </div>
+
+                <p class="result-message" id="resultMessage"></p>
+
+                <div class="detail-heading">Detected risk families</div>
+                <div class="family-list" id="familyList"></div>
+
+                <div class="detail-heading">Why this result?</div>
+                <ul class="reason-list" id="reasonList"></ul>
+
+                <div class="transaction">
+                    <div>Transaction reference</div>
+                    <strong id="transactionId">—</strong>
+                    <div id="transactionTime" style="margin-top:5px"></div>
+                </div>
+            </section>
+
+            <!-- Transaction history -->
+            <section class="card" id="historyCard">
+                <div class="section-heading">
+                    <div class="section-icon" aria-hidden="true">↺</div>
+                    <div>
+                        <h2>Payment history</h2>
+                        <p class="section-description">Your recent simulated payment checks.</p>
+                    </div>
+                </div>
+
+                <div class="history-stats">
+                    <div class="history-stat">
+                        <span>Total checks</span>
+                        <strong id="totalChecks">0</strong>
+                    </div>
+                    <div class="history-stat">
+                        <span>GREEN</span>
+                        <strong id="greenChecks">0</strong>
+                    </div>
+                    <div class="history-stat">
+                        <span>AMBER</span>
+                        <strong id="amberChecks">0</strong>
+                    </div>
+                    <div class="history-stat">
+                        <span>RED</span>
+                        <strong id="redChecks">0</strong>
+                    </div>
+                </div>
+
+                <div id="historyList" class="history-list">
+                    <p class="empty-history">Your simulated payment checks will appear here.</p>
+                </div>
+
+                <button type="button" class="clear-history" id="clearHistory">
+                    Clear history
+                </button>
+            </section>
         </div>
 
-        <p class="notice">
-            Demonstration only. No real payment is made.
-            All risk signals are manually simulated.
-        </p>
-    </div>
+        <aside class="notice">
+            <span aria-hidden="true">ⓘ</span>
+            <div>
+                <strong>Prototype demonstration only.</strong>
+                This interface uses manually simulated risk signals and a mock bank API.
+                It does not make real payments or establish that a payment is fraudulent.
+                History is stored only in this browser.
+            </div>
+        </aside>
+
+        <footer>SafePause · A prototype for safer digital payment decisions</footer>
+    </main>
 
     <script>
         const form = document.getElementById("paymentForm");
-        const result = document.getElementById("result");
+        const resultCard = document.getElementById("resultCard");
+        const submitButton = document.getElementById("submitButton");
+        const buttonText = document.getElementById("buttonText");
+
+        const STORAGE_KEY = "safepause_transaction_history_v1";
+        const MAX_HISTORY = 100;
+
+        function loadHistory() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        let history = loadHistory();
+
+        function saveHistory() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function formatAmount(amount) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function formatDate(value) {
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? "Time unavailable" : date.toLocaleString();
+        }
+
+        function tierClass(tier) {
+            return {
+                GREEN: "green",
+                AMBER: "amber",
+                RED: "red"
+            }[tier] || "green";
+        }
+
+        function renderHistory() {
+            const list = document.getElementById("historyList");
+            list.replaceChildren();
+
+            document.getElementById("totalChecks").textContent = history.length;
+            document.getElementById("greenChecks").textContent =
+                history.filter(item => item.tier === "GREEN").length;
+            document.getElementById("amberChecks").textContent =
+                history.filter(item => item.tier === "AMBER").length;
+            document.getElementById("redChecks").textContent =
+                history.filter(item => item.tier === "RED").length;
+
+            if (history.length === 0) {
+                const empty = document.createElement("p");
+                empty.className = "empty-history";
+                empty.textContent = "Your simulated payment checks will appear here.";
+                list.appendChild(empty);
+                return;
+            }
+
+            history.forEach(function (item) {
+                const row = document.createElement("article");
+                row.className = "history-item";
+
+                const left = document.createElement("div");
+                left.style.minWidth = "0";
+
+                const payee = document.createElement("div");
+                payee.className = "history-payee";
+                payee.textContent = item.payee;
+
+                const meta = document.createElement("div");
+                meta.className = "history-meta";
+                meta.textContent = formatDate(item.createdAt);
+
+                const tier = document.createElement("span");
+                tier.className = "history-tier " + tierClass(item.tier);
+                tier.textContent = item.tier + " · " + item.status;
+
+                left.append(payee, meta, tier);
+
+                const right = document.createElement("div");
+                right.className = "history-amount";
+                right.textContent = formatAmount(item.amount);
+
+                row.append(left, right);
+                list.appendChild(row);
+            });
+        }
+
+        function showResult(data) {
+            const tier = data.risk.tier;
+            const cardClass = tierClass(tier);
+
+            const titles = {
+                GREEN: "No strong warning signs",
+                AMBER: "Take a moment to verify",
+                RED: "Payment paused for review"
+            };
+
+            const messages = {
+                GREEN: "The simulated checks did not find a strong risk pattern. This is not a guarantee of safety.",
+                AMBER: "Some warning signs were detected. Verify the recipient and payment request before proceeding.",
+                RED: "A high-risk combination was detected by the prototype rules. The mock bank has paused this simulated payment."
+            };
+
+            resultCard.className = "card result-card visible " + cardClass;
+            resultCard.style.display = "block";
+
+            document.getElementById("resultTitle").textContent =
+                titles[tier] || "Assessment complete";
+            document.getElementById("tierPill").textContent = "RISK: " + tier;
+            document.getElementById("resultMessage").textContent =
+                (data.status || "SIMULATED") + " — " +
+                (messages[tier] || "Review the details below.");
+
+            const familyList = document.getElementById("familyList");
+            familyList.replaceChildren();
+
+            const families = data.risk.active_families || [];
+            if (families.length === 0) {
+                const chip = document.createElement("span");
+                chip.className = "family-chip";
+                chip.textContent = "No active risk families";
+                familyList.appendChild(chip);
+            } else {
+                families.forEach(function (family) {
+                    const chip = document.createElement("span");
+                    chip.className = "family-chip";
+                    chip.textContent = family;
+                    familyList.appendChild(chip);
+                });
+            }
+
+            const reasonList = document.getElementById("reasonList");
+            reasonList.replaceChildren();
+
+            const reasons = data.risk.reasons || [];
+            (reasons.length ? reasons : ["No explanation was returned."])
+                .forEach(function (reason) {
+                    const item = document.createElement("li");
+                    item.textContent = reason;
+                    reasonList.appendChild(item);
+                });
+
+            document.getElementById("transactionId").textContent =
+                data.transaction_id || "Not provided";
+
+            document.getElementById("transactionTime").textContent =
+                data.created_at ? "Simulated at " + formatDate(data.created_at) : "";
+
+            resultCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
 
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
 
-            result.textContent = "Checking simulated payment risk...";
+            resultCard.className = "card result-card";
+            resultCard.style.display = "none";
+            submitButton.disabled = true;
+            buttonText.textContent = "Checking simulated risk...";
 
             const payload = {
                 amount: Number(document.getElementById("amount").value),
-                payee_name: document.getElementById("payee").value,
-                payee_vpa: document.getElementById("vpa").value,
+                payee_name: document.getElementById("payee").value.trim(),
+                payee_vpa: document.getElementById("vpa").value.trim(),
                 on_call: document.getElementById("onCall").checked,
                 remote_access_active: document.getElementById("remote").checked,
+                screen_share_active: document.getElementById("screenShare").checked,
                 payee_first_time: document.getElementById("newPayee").checked,
-                payee_on_mule_list: document.getElementById("mule").checked
+                payee_on_mule_list: document.getElementById("mule").checked,
+                is_collect: document.getElementById("collect").checked,
+                device_or_sim_change_72h: document.getElementById("simChange").checked
             };
 
             try {
-                const response = await fetch(
-                    "http://127.0.0.1:8002/event",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    }
-                );
+                const response = await fetch("http://127.0.0.1:8002/event", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
 
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(JSON.stringify(data));
+                    throw new Error(data.detail || "The mock bank returned an error.");
                 }
 
-                result.textContent =
-                    "Decision: " + data.status +
-                    "\nRisk tier: " + data.risk.tier +
-                    "\nRisk families: " +
-                    data.risk.active_families.join(", ") +
-                    "\n\nReasons:\n- " +
-                    data.risk.reasons.join("\n- ") +
-                    "\n\nSimulation only — no payment was made.";
+                if (!data.risk || !["GREEN", "AMBER", "RED"].includes(data.risk.tier)) {
+                    throw new Error("The API returned an unexpected risk assessment.");
+                }
 
+                showResult(data);
+
+                const record = {
+                    id: data.transaction_id || crypto.randomUUID(),
+                    amount: data.amount,
+                    payee: data.payee_name,
+                    tier: data.risk.tier,
+                    status: data.status,
+                    createdAt: data.created_at || new Date().toISOString()
+                };
+
+                history.unshift(record);
+                history = history.slice(0, MAX_HISTORY);
+
+                if (!saveHistory()) {
+                    alert("The result was received, but browser storage is unavailable. This transaction may not appear in history after refreshing.");
+                }
+
+                renderHistory();
             } catch (error) {
-                result.textContent =
-                    "Could not contact SafePause.\n" +
-                    "Check that both APIs are running on ports 8001 and 8002.\n\n" +
-                    error.message;
+                resultCard.style.display = "block";
+                resultCard.className = "card result-card visible";
+                resultCard.replaceChildren();
+
+                const heading = document.createElement("h2");
+                heading.textContent = "Could not complete the check";
+
+                const message = document.createElement("p");
+                message.className = "result-message";
+                message.textContent =
+                    error.message +
+                    " Check that both APIs are running on ports 8001 and 8002, " +
+                    "and that the page is opened through Live Server.";
+
+                const hint = document.createElement("p");
+                hint.className = "section-description";
+                hint.textContent =
+                    "If the browser reports a CORS error, check the allowed origins in bank/api.py.";
+
+                resultCard.append(heading, message, hint);
+            } finally {
+                submitButton.disabled = false;
+                buttonText.textContent = "Check payment safety";
             }
         });
+
+        document.getElementById("clearHistory").addEventListener("click", function () {
+            if (history.length === 0) return;
+
+            const confirmed = confirm("Clear all saved simulated payment history from this browser?");
+            if (!confirmed) return;
+
+            history = [];
+            saveHistory();
+            renderHistory();
+        });
+
+        // Restore history when the page opens.
+        renderHistory();
     </script>
 </body>
 
